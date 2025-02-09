@@ -1,14 +1,20 @@
 import { Link } from 'react-router'
 import Logo from './Logo'
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/features/auth/authSlice';
 
 const NavBar = () => {
+
+    const token = useSelector((state) => state?.auth?.token);
+    const dispatch = useDispatch()
+
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900">
+        <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 
                 <Link to="/campuspulse/" className="flex items-center space-x-3 rtl:space-x-reverse">
                     <Logo />
-                    
+
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">CampusPulse</span>
                 </Link>
 
@@ -36,7 +42,10 @@ const NavBar = () => {
                         </li>
 
                         <li>
-                            <Link to="/campuspulse/login" className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Sign-In</Link>
+                            {token
+                                ? <span onClick={() => dispatch(logout()) } className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:dark:hover:text-red-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer hover:underline">Logout</span>
+                                : <Link to="/campuspulse/login" className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Sign-In</Link>
+                            }
                         </li>
                     </ul>
 

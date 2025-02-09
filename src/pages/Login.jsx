@@ -1,7 +1,52 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router-dom'
 import { Logo } from '../components'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import toast from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginSuccess } from '../redux/features/auth/authSlice'
 
 const Login = () => {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const server_uri = import.meta.env.VITE_SERVER_URI
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const token = useSelector((state) => state?.auth?.token);
+
+  useEffect(() => {
+    if (token) navigate("/campuspulse/");
+  }, [token, navigate]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+
+      const response = await axios.post(`${server_uri}/auth/signin`, {
+        email, password
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+
+      const { token, message } = response.data;
+      dispatch(loginSuccess({ token }));
+
+      toast.success(message);
+      navigate("/campuspulse/");
+
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -13,7 +58,7 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={submitHandler} method="POST" className="space-y-6">
 
             <div>
               <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -21,6 +66,8 @@ const Login = () => {
               </label>
               <div className="mt-2">
                 <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   id="email"
                   name="email"
                   type="email"
@@ -36,9 +83,14 @@ const Login = () => {
                 <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
                   Password
                 </label>
+                <div className="text-sm">
+                  <Link to="/campuspulse/forgotPassword" className="font-semibold text-indigo-600 transition hover:text-indigo-800">Forgot password?</Link>
+                </div>
               </div>
               <div className="mt-2">
                 <input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   id="password"
                   name="password"
                   type="password"
@@ -62,7 +114,7 @@ const Login = () => {
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
             Don&lsquo;t have an account?{' '}
-            <Link to="/campuspulse/signup/" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            <Link to="/campuspulse/signup/" className="font-semibold text-indigo-600 transition hover:text-indigo-800">
               Sign up to create an account
             </Link>
           </p>

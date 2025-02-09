@@ -11,15 +11,22 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "build_deploy": "npm run build && npm run deploy"
+    "build_deploy": "npm run build && npm run deploy",
+    "net": "npm run dev && npm run dev -- --host 192.168.1.103"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.1",
     "@tailwindcss/vite": "^4.0.4",
+    "axios": "^1.7.9",
     "gh-pages": "^6.3.0",
+    "mongodb": "^6.13.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.1",
+    "react-redux": "^9.2.0",
     "react-router": "^7.1.5",
     "react-router-dom": "^7.1.5",
+    "react-scroll-lock": "^1.0.0",
     "tailwindcss": "^4.0.4"
   },
   "devDependencies": {
