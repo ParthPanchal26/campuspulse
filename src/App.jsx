@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast'
 import { NavBar } from './components/'
-import { Signup, Login, Home, Events, About, ForgotPassword, ResetPassword } from './pages'
+import { Signup, Login, Home, Events, About, ForgotPassword, ResetPassword, CreateEvent } from './pages'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const App = () => {
@@ -12,6 +12,7 @@ const App = () => {
           <Routes>
             <Route path='/campuspulse/' exact element={<Home />} />
             <Route path='/campuspulse/events' exact element={<Events />} />
+            <Route path='/campuspulse/create-event' exact element={<CreateEvent />} />
             <Route path='/campuspulse/login' exact element={<Login />} />
             <Route path='/campuspulse/signup' exact element={<Signup />} />
             <Route path='/campuspulse/forgotPassword' exact element={<ForgotPassword />} />

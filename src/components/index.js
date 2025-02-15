@@ -1,2 +1,6 @@
 export { default as NavBar } from './NavBar.jsx'
 export { default as Logo } from './Logo.jsx'
+export { default as InputBox } from './InputBox.jsx'
+export { default as Button } from './Button.jsx'
+export { default as FormHeading } from './FormHeading.jsx'
+export { default as FormFooter } from './FormFooter.jsx'
