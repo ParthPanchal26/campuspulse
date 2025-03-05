@@ -16,6 +16,8 @@ const Home = () => {
             {" "}
             <Link to="/campuspulse/about">About</Link>
             {" "}
+            <Link to="/campuspulse/create-event">Create event</Link>
+            {" "}
             <button onClick={() => dispatch(logout())} className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-900 md:hover:bg-transparent md:hover:text-red-700 md:dark:hover:text-red-500 dark:text-black dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer hover:underline">Logout</button>
 
             
