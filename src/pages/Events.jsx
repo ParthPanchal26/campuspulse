@@ -39,12 +39,12 @@ const Events = () => {
                                             : event.description.slice(0, 160)
                                     }
                                 </p>
-                                <a href="#" className="inline-flex px-3 pb-5     md:p-3 items-center font-medium text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700">
-                                    View More
+                                <button className="inline-flex px-3 pb-5 md:p-3 items-center font-medium text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700">
+                                    View Event
                                     <svg className=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                                     </svg>
-                                </a>
+                                </button>
                             </div>
                         ))
                     }

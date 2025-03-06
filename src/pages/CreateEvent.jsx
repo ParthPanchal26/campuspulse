@@ -3,6 +3,7 @@ import { Button, FormHeading, InputBox, TextArea, DropDown, RequestLogin } from 
 import { useSelector } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 const CreateEvent = () => {
 
@@ -21,8 +22,10 @@ const CreateEvent = () => {
 	const [contactPhone, setContactPhone] = useState('');
 	const [tags, setTags] = useState(['#']);
 
-	const server_uri = import.meta.env.VITE_SERVER_URI
+	const server_uri = import.meta.env.VITE_SERVER_URI;
 	const token = useSelector((state) => state?.auth?.token);
+	
+	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
@@ -54,6 +57,8 @@ const CreateEvent = () => {
 			const { message } = response.data;
 
 			toast.success(message);
+
+			navigate("/campuspulse/events");
 
 		} catch (error) {
 			toast.error(error.response.data.message)
