@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, NavLink } from 'react-router'
 import Logo from './Logo'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/features/auth/authSlice';
@@ -6,7 +6,7 @@ import { logout } from '../redux/features/auth/authSlice';
 const NavBar = () => {
 
     const token = useSelector((state) => state?.auth?.token);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full z-50">
@@ -30,25 +30,71 @@ const NavBar = () => {
                     <ul className="flex items-center flex-col font-medium p-4 md:p-0 mt-4 border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 
                         <li>
-                            <Link to="/campuspulse/" className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</Link>
+                            <NavLink
+                                to="/campuspulse"
+                                end
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "block py-2 px-3 md:p-0 transition text-blue-400"
+                                        : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                }
+                            >
+                                Home
+                            </NavLink>
                         </li>
 
                         <li>
-                            <Link to="/campuspulse/events" className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Events</Link>
+                            <NavLink
+                                to="/campuspulse/events"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "block py-2 px-3 md:p-0 transition text-blue-400"
+                                        : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                }
+                            >
+                                Events
+                            </NavLink>
                         </li>
 
                         <li>
-                            <Link to="/campuspulse/create-event" className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Create Event</Link>
+                            <NavLink
+                                to="/campuspulse/create-event"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "block py-2 px-3 md:p-0 transition text-blue-400"
+                                        : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                }
+                            >
+                                Create Event
+                            </NavLink>
                         </li>
 
                         <li>
-                            <Link to="/campuspulse/about" className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</Link>
+                            <NavLink
+                                to="/campuspulse/about"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "block py-2 px-3 md:p-0 transition text-blue-400"
+                                        : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                }
+                            >
+                                About
+                            </NavLink>
                         </li>
 
                         <li>
                             {token
-                                ? <button onClick={() => dispatch(logout()) } className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:dark:hover:text-red-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer hover:underline">Logout</button>
-                                : <Link to="/campuspulse/login" className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Sign-In</Link>
+                                ? <button onClick={() => dispatch(logout())} className="block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:dark:hover:text-red-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer hover:underline">Logout</button>
+                                : <NavLink
+                                    to="/campuspulse/login"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "block py-2 px-3 md:p-0 transition text-blue-400"
+                                            : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                    }
+                                >
+                                    Sign-In
+                                </NavLink>
                             }
                         </li>
                     </ul>

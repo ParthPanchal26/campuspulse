@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { Button, FormHeading, InputBox, TextArea, DropDown, RequestLogin } from "../components"
 import { useSelector } from "react-redux";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const CreateEvent = () => {
 
-	const [eventName, setEventName] = useState('');
+	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [date, setDate] = useState('');
 	const [time, setTime] = useState('');
@@ -17,13 +19,46 @@ const CreateEvent = () => {
 	const [registrationDeadline, setRegistrationDeadline] = useState('');
 	const [contactEmail, setContactEmail] = useState('');
 	const [contactPhone, setContactPhone] = useState('');
-	const [tags, setTags] = useState('#');
+	const [tags, setTags] = useState(['#']);
 
-	// const server_uri = import.meta.env.VITE_SERVER_URI
+	const server_uri = import.meta.env.VITE_SERVER_URI
 	const token = useSelector((state) => state?.auth?.token);
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
+
+		try {
+			const response = await axios.post(`${server_uri}/events/`, {
+				name,
+				description,
+				date,
+				time,
+				venue,
+				organizedBy,
+				price,
+				totalSeats,
+				availableSeats,
+				category,
+				registrationDeadline,
+				contactEmail,
+				contactPhone,
+				tags
+			}, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				withCredentials: true,
+			})
+
+			const { message } = response.data;
+
+			toast.success(message);
+
+		} catch (error) {
+			toast.error(error.response.data.message)
+		}
+
 	}
 
 
@@ -37,7 +72,7 @@ const CreateEvent = () => {
 						<div className="mt-5 sm:mx-auto sm:w-[1080px]">
 							<form onSubmit={submitHandler} method="POST" className="space-y-6">
 
-								<InputBox label="Name" value={eventName} placeholder='Event Name' setValue={setEventName} id="e_name" name="name" type="text" />
+								<InputBox label="Name" value={name} placeholder='Event Name' setValue={setName} id="e_name" name="name" type="text" />
 
 								<TextArea label="Description" value={description} rows={5} placeholder='Event Description' setValue={setDescription} id="e_desc" name="description" type="textarea" />
 
