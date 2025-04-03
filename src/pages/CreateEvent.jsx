@@ -20,7 +20,7 @@ const CreateEvent = () => {
 	const [registrationDeadline, setRegistrationDeadline] = useState('');
 	const [contactEmail, setContactEmail] = useState('');
 	const [contactPhone, setContactPhone] = useState('');
-	const [tags, setTags] = useState(['#']);
+	const [tags, setTags] = useState([]);
 
 	const server_uri = import.meta.env.VITE_SERVER_URI;
 	const token = useSelector((state) => state?.auth?.token);
@@ -98,7 +98,7 @@ const CreateEvent = () => {
 
 									<InputBox label="Contact Email" value={contactEmail} placeholder="example@gmail.com" setValue={setContactEmail} id="e_contactEmail" name="contactEmail" type="email" />
 									<InputBox label="Contact Phone" value={contactPhone} placeholder="123-456-7890" setValue={setContactPhone} id="e_contactPhone" name="contactPhone" type="text" pattern="[0-9]*" inputMode="numeric" />
-									<InputBox label="Tags" value={tags} placeholder="#tags" setValue={setTags} id="e_tags" name="tags" type="text" />
+									<InputBox label="Tags" value={tags} placeholder="#tag1 #tag2 #tag3 ..." setValue={setTags} id="e_tags" name="tags" type="text" />
 
 								</div>
 

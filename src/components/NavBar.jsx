@@ -13,6 +13,7 @@ const NavBar = () => {
     function handleLogout() {
         dispatch(logout());
         navigate("/campuspulse/");
+        window.location.reload()
     }
 
     return (
