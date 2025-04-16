@@ -32,7 +32,7 @@ const Home = () => {
     }
 
     return (
-        <div className="h-[1150px] sm:h-[90vh] sm:w-full bg-slate-900">
+        <div className="h-[1200px] sm:h-[90vh] w-full bg-slate-900">
             <div className="flex m-2 flex-col justify-center">
                 <section className="text-6xl text-center mt-10 font-bold text-white">
                     Welcome to CampusPulse
@@ -41,25 +41,25 @@ const Home = () => {
                 <section className="flex align-middle justify-center mt-8 text-2xl">
                     <button onClick={handleClick} className="bg-purple-600 py-4 px-8 rounded-2xl text-white transition-all hover:bg-purple-700 hover:font-bold hover:text-sky-100 hover:px-12">Get Started &rarr;</button>
                 </section>
-                <section className="text-white m-auto mt-6 sm:w-[1080px]">
+                <section className="text-white m-auto mt-6">
                     <p className="max-w-30 mx-2 my-2 text-xl underline underline-offset-2 transition-all hover:underline-offset-4">Latest Events</p>
 
-                    <div className="m-auto sm:flex justify-center">
+                    <div className="flex justify-center flex-wrap">
 
                         {
                             events.slice().reverse().slice(0, 3).map((event) => (
 
-                                <div key={event.id} className="w-[25rem] m-2 p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                                <div key={event?._id} className="sm:w-[25rem] m-2 p-6 border rounded-sm shadow-sm bg-gray-800 border-gray-700">
 
-                                    <div>
-                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{event.name}</h5>
-                                        <p className="font-normal text-gray-700 dark:text-gray-400">{event.description.slice(0, 50)}</p>
+                                    <div className="h-30 sm:h-32">
+                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{event?.name}</h5>
+                                        <p className="font-normal text-gray-700 dark:text-gray-400">{event?.description.slice(0, 50)}</p>
                                     </div>
 
 
                                     {
                                         token
-                                            ? <button onClick={() => navigate(`/campuspulse/event-details/${event._id}`)} className="inline-flex mt-2 sm:mt-2 items-center px-6 py-3 text-sm font-medium text-center text-white bg-purple-700 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none transition-all hover:px-9">
+                                            ? <button onClick={() => navigate(`/campuspulse/event-details/${event?._id}`)} className="inline-flex mt-2 sm:mt-2 items-center px-6 py-3 text-sm font-medium text-center text-white bg-purple-700 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none transition-all hover:px-9">
                                                 View Event
                                                 <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />

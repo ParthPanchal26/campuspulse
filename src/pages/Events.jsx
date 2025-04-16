@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RequestLogin } from "../components";
+import { useNavigate } from "react-router";
 
 const Events = () => {
 
@@ -22,33 +23,35 @@ const Events = () => {
         getEvents()
     }, [])
 
+    const navigate = useNavigate();
+
 
     return (
         <>
             {token
                 ?
-                <section className="p-6 flex flex-col gap-2 w-[1536px] m-auto max-w-full sm:w-auto md:w-[1536px]">
-                    {
-                        events.map((event) => (
-                            <div key={event._id} className="bg-white rounded-lg md:p-8 dark:bg-slate-800" id="about" role="tabpanel" aria-labelledby="about-tab">
-                                <h2 className="mb-3 p-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">{event.name}</h2>
-                                <p className="mb-3 p-3 text-justify text-gray-500 dark:text-gray-400">
-                                    {
-                                        event.description.length > 240
-                                            ? event.description.slice(0, 160) + '...'
-                                            : event.description.slice(0, 160)
-                                    }
-                                </p>
-                                <button className="inline-flex px-3 pb-5 md:p-3 items-center font-medium text-blue-700 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700">
-                                    View Event
-                                    <svg className=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                </button>
-                            </div>
-                        ))
-                    }
-                </section>
+                <>
+                    <div className="text-3xl text-white bg-slate-900 font-medium px-10 py-3">Events</div>
+                    <section className="flex flex-wrap bg-slate-900 justify-center">
+                        {
+                            events.slice().reverse().map((event) => (
+                                <div key={event?._id} className="mx-5 my-3 w-[325px] border bg-slate-800 border-gray-700 rounded-sm">
+                                    <div className="flex flex-col">
+                                        <div className="m-3">
+                                            <div className="h-48">
+                                                <div className=" font-medium text-white text-2xl text-justify">{event?.name}</div>
+                                                <p className="text-white p-1">•&nbsp;{event?.createdAt.slice(0, 10)}</p>
+                                                <hr className="text-white my-2" />
+                                                <p className="text-justify text-white">{(event?.description.length > 50) ? `${event?.description.slice(0, 50)} . . .` : event?.description}</p>
+                                            </div>
+                                            <button onClick={() => navigate(`/campuspulse/event-details/${event._id}`)} value="View Event" className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs transition hover:bg-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-gray-700 mt-2 align-center">View Event</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </section>
+                </>
                 : <RequestLogin />
             }
         </>

@@ -19,6 +19,7 @@
     "@tailwindcss/vite": "^4.0.4",
     "axios": "^1.7.9",
     "gh-pages": "^6.3.0",
+    "jwt-decode": "^4.0.0",
     "mongodb": "^6.13.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
