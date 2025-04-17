@@ -39,8 +39,9 @@ const Login = () => {
       const { token, message } = response.data;
       dispatch(loginSuccess({ token }));
 
-      toast.success(message);
+      toast.success(message)
       navigate("/campuspulse/");
+      // window.location.reload()
 
     } catch (error) {
       toast.error(error.response.data.message)

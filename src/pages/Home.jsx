@@ -23,7 +23,7 @@ const Home = () => {
         if (token) getEvents()
         else setEvents([{ id: 0, name: "Please Sign In", description: "Sign In to see this event" }])
 
-    }, [])
+    }, [token])
 
     const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ const Home = () => {
                         {
                             events?.slice().reverse().slice(0, 3).map((event) => (
 
-                                <div key={event?._id} className="max-w-[25rem] sm:max-w-[25rem] m-2 p-6 border rounded-sm shadow-sm bg-gray-800 border-gray-700">
+                                <div key={event?._id} className="min-w-[25rem] max-w-[25rem] sm:max-w-[25rem] m-2 p-6 border rounded-sm shadow-sm bg-gray-800 border-gray-700">
 
                                     <div className="h-30 sm:h-32">
                                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{event?.name}</h5>

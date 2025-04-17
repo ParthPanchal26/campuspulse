@@ -2,19 +2,44 @@ import { Link, NavLink, useNavigate } from 'react-router'
 import Logo from './Logo'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/features/auth/authSlice';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const NavBar = () => {
 
     const token = useSelector((state) => state?.auth?.token);
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
+    const server_uri = import.meta.env.VITE_SERVER_URI
+    const [userRole, setUserRole] = useState('Student');
 
     function handleLogout() {
         dispatch(logout());
         navigate("/campuspulse/");
-        window.location.reload()
+        toast.success("Sign-out successfully")
     }
+
+    const getUserRole = async () => {
+        try {
+            const response = await axios.get(`${server_uri}/auth/whoami`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+            })
+
+            setUserRole(response.data.role)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        if (token) getUserRole();
+    }, [token])
 
     return (
         <nav className="bg-white border-b-1 border-gray-500 dark:bg-gray-900 fixed top-0 left-0 w-full z-50">
@@ -64,31 +89,21 @@ const NavBar = () => {
                             </NavLink>
                         </li>
 
-                        <li>
-                            <NavLink
-                                to="/campuspulse/create-event"
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? "block py-2 px-3 md:p-0 transition text-blue-400"
-                                        : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                                }
-                            >
-                                Create Event
-                            </NavLink>
-                        </li>
-
-                        {/* <li>
-                            <NavLink
-                                to="/campuspulse/about"
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? "block py-2 px-3 md:p-0 transition text-blue-400"
-                                        : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                                }
-                            >
-                                About
-                            </NavLink>
-                        </li> */}
+                        {
+                            token && userRole && userRole !== 'Student' && (
+                                <li>
+                                    <NavLink
+                                        to="/campuspulse/create-event"
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? "block py-2 px-3 md:p-0 transition text-blue-400"
+                                                : "block py-2 px-3 md:p-0 transition text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                                        }
+                                    >
+                                        Create Event
+                                    </NavLink>
+                                </li>)
+                        }
 
                         <li>
                             {token
