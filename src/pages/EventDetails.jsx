@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import useUserId from "../hooks/userDecoder.js"
 
 const EventDetails = () => {
@@ -14,6 +14,8 @@ const EventDetails = () => {
     const token = useSelector((state) => state?.auth?.token);
     const [payload, setPayload] = useState(false)
     const userId = useUserId();
+    const navigate = useNavigate()
+    const [newTime, setNewTime] = useState('')
 
     const getEvents = async () => {
         const response = await fetch(`${server_uri}/events/${param.id}`)
@@ -22,7 +24,6 @@ const EventDetails = () => {
 
         const data = await response.json()
         setEventData(data)
-        console.log(data);
 
         if (data.tags && data.tags.length > 0) {
             const extractedTags = data.tags[0]
@@ -42,11 +43,22 @@ const EventDetails = () => {
     useEffect(() => {
         // console.log(eventData);
         // console.log(tags)
-        if (eventData?.registrationDeadline) {
-            setExpired(new Date(eventData.registrationDeadline) < new Date());
+        if (eventData?.registrationDeadline && eventData?.time) {
+            const deadlineDateTime = new Date(`${eventData.registrationDeadline.slice(0, 10)}T${eventData.time}`);
+            const now = new Date()
+
+            setExpired(deadlineDateTime < now);
         }
 
         if (userId === eventData?.organizerId) setPayload(true)
+
+        const time24 = eventData?.time;
+        const time12 = new Date(`1970-01-01T${time24}`).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+        setNewTime(time12);
 
     }, [eventData])
 
@@ -58,9 +70,11 @@ const EventDetails = () => {
                 {
                     payload
                         ? <div className="m-1 flex justify-end">
-                            <svg className="w-6 h-6 text-white cursor-pointer transition-all hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1v3m5-3v3m5-3v3M1 7h7m1.506 3.429 2.065 2.065M19 7h-2M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm6 13H6v-2l5.227-5.292a1.46 1.46 0 0 1 2.065 2.065L8 16Z" />
-                            </svg>
+                            <button onClick={() => navigate(`/campuspulse/event-edit/${param.id}`)}>
+                                <svg className="w-6 h-6 text-white cursor-pointer transition-all hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1v3m5-3v3m5-3v3M1 7h7m1.506 3.429 2.065 2.065M19 7h-2M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm6 13H6v-2l5.227-5.292a1.46 1.46 0 0 1 2.065 2.065L8 16Z" />
+                                </svg>
+                            </button>
                         </div>
                         : <></>
                 }
@@ -108,7 +122,7 @@ const EventDetails = () => {
                     <div className="flex flex-row m-auto justify-center gap-3 flex-wrap max-w-[1024px] items-center my-3 font-medium">
                         <p className="bg-gray-800 px-8 py-5 rounded-sm text-left  transition-all hover:bg-slate-950  text-white">Organized By&nbsp;-&nbsp;{eventData?.organizedBy}</p>
                         <p className="bg-gray-800 px-8 py-5 rounded-sm text-left  transition-all hover:bg-slate-950  text-white">Price&nbsp;-&nbsp;{eventData?.price === 0 ? "Free" : eventData?.price}</p>
-                        <p className="bg-gray-800 px-8 py-5 rounded-sm text-left  transition-all hover:bg-slate-950  text-white">Time&nbsp;-&nbsp;{eventData?.time}</p>
+                        <p className="bg-gray-800 px-8 py-5 rounded-sm text-left  transition-all hover:bg-slate-950  text-white">Time&nbsp;-&nbsp;{newTime}</p>
                         <p className="bg-gray-800 px-8 py-5 rounded-sm text-left  transition-all hover:bg-slate-950  text-white">Total Seats&nbsp;-&nbsp;{eventData?.totalSeats}</p>
                         <p className="bg-gray-800 px-8 py-5 rounded-sm text-left  transition-all hover:bg-slate-950  text-white">Available Seats&nbsp;-&nbsp;{eventData?.availableSeats}</p>
                     </div>

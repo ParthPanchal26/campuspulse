@@ -47,12 +47,12 @@ const Home = () => {
                     <div className="flex justify-center flex-wrap">
 
                         {
-                            events.slice().reverse().slice(0, 3).map((event) => (
+                            events?.slice().reverse().slice(0, 3).map((event) => (
 
-                                <div key={event?._id} className="sm:w-[25rem] m-2 p-6 border rounded-sm shadow-sm bg-gray-800 border-gray-700">
+                                <div key={event?._id} className="max-w-[25rem] sm:max-w-[25rem] m-2 p-6 border rounded-sm shadow-sm bg-gray-800 border-gray-700">
 
                                     <div className="h-30 sm:h-32">
-                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{event?.name}</h5>
+                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-wrap">{event?.name}</h5>
                                         <p className="font-normal text-gray-700 dark:text-gray-400">{event?.description.slice(0, 50)}</p>
                                     </div>
 

@@ -39,10 +39,10 @@ const Events = () => {
                                     <div className="flex flex-col">
                                         <div className="m-3">
                                             <div className="h-48">
-                                                <div className=" font-medium text-white text-2xl text-justify">{event?.name}</div>
-                                                <p className="text-white p-1">•&nbsp;{event?.createdAt.slice(0, 10)}</p>
+                                                <div className=" font-medium text-white text-2xl p-1">{event?.name.length > 38 ? `${event?.name.slice(0, 40)}...` : `${event?.name}`}</div>
+                                                <p className="text-white p-2">•&nbsp;{event?.createdAt.slice(0, 10)}</p>
                                                 <hr className="text-white my-2" />
-                                                <p className="text-justify text-white">{(event?.description.length > 50) ? `${event?.description.slice(0, 50)} . . .` : event?.description}</p>
+                                                <p className="text-justify text-white p-2">{(event?.description.length > 50) ? `${event?.description.slice(0, 50)} . . .` : event?.description}</p>
                                             </div>
                                             <button onClick={() => navigate(`/campuspulse/event-details/${event._id}`)} value="View Event" className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs transition hover:bg-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-gray-700 mt-2 align-center">View Event</button>
                                         </div>
