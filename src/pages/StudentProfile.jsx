@@ -3,6 +3,7 @@ import { InputBox, Button } from '../components';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router';
 
 const StudentProfile = () => {
     const [profile, setProfile] = useState({
@@ -16,6 +17,7 @@ const StudentProfile = () => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [hasProfile, setHasProfile] = useState(true);
+    const [studentEvents, setStudentEvents] = useState([])
 
     const server_uri = import.meta.env.VITE_SERVER_URI;
     const token = useSelector((state) => state?.auth?.token);
@@ -28,6 +30,7 @@ const StudentProfile = () => {
                     withCredentials: true
                 });
                 setProfile(res.data.profile);
+                //console.log(res.data);
                 setHasProfile(true);
             } catch (error) {
                 console.error(error);
@@ -39,6 +42,23 @@ const StudentProfile = () => {
             }
         };
         fetchProfile();
+
+        const fetchEvents = async () => {
+            try {
+                const events = await axios.get(`${server_uri}/profile/events`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    withCredentials: true
+                })
+                const StudentRegisteredEvents = events.data.registeredEvents
+                setStudentEvents(StudentRegisteredEvents)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchEvents();
+
     }, [token, server_uri]);
 
     const handleChange = (field, value) => {
@@ -124,6 +144,9 @@ const StudentProfile = () => {
                                 </>
                             ) : (
                                 <>
+                                    <p className="block text-xl m-1 text-gray-900">Name</p>
+                                    <p className='py-2'>{profile.name}</p>
+                                    <hr />
                                     <p className="block text-xl m-1 text-gray-900">Phone</p>
                                     <p className='py-2'>{profile.phoneNumber}</p>
                                     <hr />
@@ -166,6 +189,9 @@ const StudentProfile = () => {
                                 </>
                             ) : (
                                 <>
+                                    <p className="block text-xl m-1 text-gray-900">Email</p>
+                                    <p className='py-2'>{profile.email}</p>
+                                    <hr />
                                     <p className="block text-xl m-1 text-gray-900">Enrollment No</p>
                                     <p className='py-2'>{profile.enrollmentNumber}</p>
                                     <hr />
@@ -187,6 +213,73 @@ const StudentProfile = () => {
                     )}
                 </form>
             </div>
+
+            <section className='m-6'>
+                <h1 className="text-2xl font-medium">My Registrations</h1>
+
+
+
+                <div className="relative overflow-x-auto mt-3">
+                    <table className="w-full text-sm text-left rtl:text-right text-slate-900">
+                        <thead className="text-xs text-gray-700 uppercase bg-slate-200">
+                            <tr>
+                                <th scope="col" className="px-6 py-3">
+                                    Event
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Category
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Date
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Venue
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Registration Date
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    View Link
+                                </th>
+                            </tr>
+                        </thead>
+                        {
+                            studentEvents && studentEvents.map((event) => (
+                                <tbody key={event._id}>
+                                    <tr className="bg-slate-50 border-b border-gray-300">
+                                        <th scope="row" className="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">
+                                            {event?.name.slice(0, 20)}
+                                        </th>
+                                        <td className="px-6 py-4">
+                                            {event?.category}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {event?.date}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {event?.venue.slice(0, 20)}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {event?.registrationDeadline.slice(0, 10)}
+                                        </td>
+                                        <td className='px-6 py-4 text-blue-500 underline underline-offset-1'>
+                                        <Link to={`/campuspulse/event-details/${event?.id}`}>
+                                            View
+                                        </Link>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            ))
+                        }
+                    </table>
+                </div>
+
+
+
+            </section>
+
+
+
         </div>
     );
 };
