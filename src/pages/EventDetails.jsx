@@ -83,8 +83,8 @@ const EventDetails = () => {
                 <section className="m-1">
                     <div className="flex flex-col sm:flex-row m-2 sm:m-0 sm:justify-between items-center">
                         <div className="text-white">
-                            <div className="text-4xl font-medium p-0.5 text-center">{eventData?.name}</div>
-                            <div className="flex gap-1 font-medium p-2 justify-center">
+                            <div className="text-4xl font-medium p-0.5 text-center sm:text-left">{eventData?.name}</div>
+                            <div className="flex gap-1 font-medium p-2 justify-center sm:justify-start">
                                 <span>{eventData?.category}</span>
                                 <span className='text-slate-100'>•</span>
                                 <span>{eventData?.venue}</span>
