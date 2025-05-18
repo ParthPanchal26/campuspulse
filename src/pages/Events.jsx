@@ -39,7 +39,7 @@ const Events = () => {
                 <div className="flex flex-col">
                     <div className="bg-slate-300 flex justify-between px-5 items-center py-4">
                         <p className="text-3xl text-slate-950 font-medium">Events</p>
-                        <p className="ml-5 font-medium text-xl text-white">
+                        <div className="ml-5 font-medium text-xl text-white">
                             <div className="flex">
                                 <label htmlFor="id" className="block text-sm/6 m-1 font-medium text-slate-950">
                                     Category:
@@ -59,14 +59,14 @@ const Events = () => {
                                     <option className="bg-slate-600" value="Other">Other</option>
                                 </select>
                             </div>
-                        </p>
+                        </div>
                     </div>
 
                     <div className="flex-grow">
                         <section className="flex flex-wrap bg-slate-0 justify-center bg-slate-200 pb-10">
                             {
-                                filteredEvents.map((event) => (
-                                    <div key={event?._id} className="mx-2 my-2 w-[325px] border bg-slate-800 border-gray-700 rounded-sm">
+                                filteredEvents.slice().reverse().map((event) => (
+                                    <div key={event?.id} className="mx-2 my-2 w-[325px] border bg-slate-800 border-gray-700 rounded-sm">
                                         <div className="flex flex-col">
                                             <div className="m-3">
                                                 <div className="h-48">

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router"
 import useUserId from "../hooks/userDecoder.js"
+import axios from "axios"
+import toast from "react-hot-toast"
 
 const EventDetails = () => {
 
@@ -73,6 +75,25 @@ const EventDetails = () => {
 
     }, [eventData])
 
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post(`${server_uri}/events/${param.id}/register`, {}, 
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                });
+            // console.log(response)
+            toast.success(response?.data?.message)
+            setIsRegistered(true)
+        } catch (error) {
+            console.log(error)
+            toast.error(error?.response?.data.message)
+        }
+    }
+
 
     return (
         <section className="p-6 flex bg-slate-900 flex-col gap-2 w-[1536px] m-auto max-w-full sm:w-auto md:w-full">
@@ -106,7 +127,7 @@ const EventDetails = () => {
                                 isRegFull ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">No Seats</h2>
                                     : isRegistered ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Registered</h2>
                                         : expired ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Expired</h2>
-                                            : <button className="bg-gray-800 cursor-pointer px-10 rounded-sm transition-all hover:bg-gray-950 hover:text-blue-400 hover:border hover:border-blue-400 py-3 text-xl font-medium text-white">Apply</button>
+                                            : <button onClick={handleRegister} className="bg-gray-800 cursor-pointer px-10 rounded-sm transition-all hover:bg-gray-950 hover:text-blue-400 hover:border hover:border-blue-400 py-3 text-xl font-medium text-white">Apply</button>
                             }
                         </div>
                     </div>

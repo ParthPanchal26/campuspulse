@@ -245,7 +245,7 @@ const StudentProfile = () => {
                         </thead>
                         {
                             studentEvents && studentEvents.map((event) => (
-                                <tbody key={event._id}>
+                                <tbody key={event.id}>
                                     <tr className="bg-slate-50 border-b border-gray-300">
                                         <th scope="row" className="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">
                                             {event?.name.slice(0, 20)}
