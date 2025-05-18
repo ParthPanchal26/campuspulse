@@ -36,12 +36,12 @@ const Events = () => {
     return (
         <>
             {token ? (
-                <div className="min-h-screen flex flex-col bg-slate-900">
-                    <div className="bg-slate-900 flex justify-between px-5 items-center py-4">
-                        <p className="text-3xl text-white font-medium">Events</p>
+                <div className="flex flex-col">
+                    <div className="bg-slate-300 flex justify-between px-5 items-center py-4">
+                        <p className="text-3xl text-slate-950 font-medium">Events</p>
                         <p className="ml-5 font-medium text-xl text-white">
                             <div className="flex">
-                                <label htmlFor="id" className="block text-sm/6 m-1 font-medium text-gray-50">
+                                <label htmlFor="id" className="block text-sm/6 m-1 font-medium text-slate-950">
                                     Category:
                                 </label>
                                 <select
@@ -63,7 +63,7 @@ const Events = () => {
                     </div>
 
                     <div className="flex-grow">
-                        <section className="flex flex-wrap bg-slate-900 justify-center h-[400px] pb-10">
+                        <section className="flex flex-wrap bg-slate-0 justify-center bg-slate-200 pb-10">
                             {
                                 filteredEvents.map((event) => (
                                     <div key={event?._id} className="mx-2 my-2 w-[325px] border bg-slate-800 border-gray-700 rounded-sm">

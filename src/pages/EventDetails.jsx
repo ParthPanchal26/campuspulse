@@ -10,12 +10,14 @@ const EventDetails = () => {
     const [eventData, setEventData] = useState({})
     const [expired, setExpired] = useState(false)
     const [tags, setTags] = useState([])
+    const [newTime, setNewTime] = useState('')
+    const [payload, setPayload] = useState(false)
+    const [isRegFull, setIsRegFull] = useState(true)
+    const [isRegistered, setIsRegistered] = useState(false)
     const server_uri = import.meta.env.VITE_SERVER_URI
     const token = useSelector((state) => state?.auth?.token);
-    const [payload, setPayload] = useState(false)
     const userId = useUserId();
     const navigate = useNavigate()
-    const [newTime, setNewTime] = useState('')
 
     const getEvents = async () => {
         const response = await fetch(`${server_uri}/events/${param.id}`)
@@ -49,6 +51,15 @@ const EventDetails = () => {
 
             setExpired(deadlineDateTime < now);
         }
+
+        if (eventData?.availableSeats === 0) setIsRegFull(true)
+        else setIsRegFull(false)
+
+        eventData?.registeredUsers?.map((item) => {
+            // console.log(item.userId);
+            if (item.userId === userId) setIsRegistered(true)
+            else setIsRegistered(false)
+        })
 
         if (userId === eventData?.organizerId) setPayload(true)
 
@@ -91,9 +102,11 @@ const EventDetails = () => {
                             </div>
                         </div>
                         <div className="self-center my-1">
-                            {expired
-                                ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Expired</h2>
-                                : <button className="bg-gray-800 cursor-pointer px-10 rounded-sm transition-all hover:bg-gray-950 hover:text-blue-400 hover:border hover:border-blue-400 py-3 text-xl font-medium text-white">Apply</button>
+                            {
+                                isRegFull ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">No Seats</h2>
+                                    : isRegistered ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Registered</h2>
+                                        : expired ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Expired</h2>
+                                            : <button className="bg-gray-800 cursor-pointer px-10 rounded-sm transition-all hover:bg-gray-950 hover:text-blue-400 hover:border hover:border-blue-400 py-3 text-xl font-medium text-white">Apply</button>
                             }
                         </div>
                     </div>
