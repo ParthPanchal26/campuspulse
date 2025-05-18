@@ -64,7 +64,7 @@ const NavBar = () => {
 
                         <li>
                             <NavLink
-                                to="/campuspulse"
+                                to="/campuspulse/"
                                 end
                                 className={({ isActive }) =>
                                     isActive
