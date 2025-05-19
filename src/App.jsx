@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast'
 import { NavBar } from './components/'
-import { Signup, Login, Home, Events, About, ForgotPassword, ResetPassword, CreateEvent, EventDetails, EventEdit, StudentProfile } from './pages'
+import { Signup, Login, Home, Events, About, ForgotPassword, ResetPassword, CreateEvent, EventDetails, EventEdit, StudentProfile, Manage, Participants } from './pages'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const App = () => {
@@ -21,6 +21,8 @@ const App = () => {
             <Route path='/campuspulse/event-details/:id' exact element={<EventDetails />} />
             <Route path='/campuspulse/event-edit/:id' exact element={<EventEdit />} />
             <Route path='/campuspulse/student-profile' exact element={<StudentProfile />} />
+            <Route path='/campuspulse/manage/' exact element={<Manage />} />
+            <Route path='/campuspulse/event-participants/:id' exact element={<Participants />} />
           </Routes>
           <Toaster />
         </div>

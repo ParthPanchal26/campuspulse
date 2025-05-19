@@ -4,22 +4,26 @@ import { useNavigate, useParams } from "react-router"
 import useUserId from "../hooks/userDecoder.js"
 import axios from "axios"
 import toast from "react-hot-toast"
+import useUserRole from "../hooks/useUserRole.js"
 
 const EventDetails = () => {
 
     const param = useParams()
 
-    const [eventData, setEventData] = useState({})
-    const [expired, setExpired] = useState(false)
-    const [tags, setTags] = useState([])
-    const [newTime, setNewTime] = useState('')
-    const [payload, setPayload] = useState(false)
-    const [isRegFull, setIsRegFull] = useState(true)
-    const [isRegistered, setIsRegistered] = useState(false)
-    const server_uri = import.meta.env.VITE_SERVER_URI
+    const [eventData, setEventData] = useState({});
+    const [expired, setExpired] = useState(false);
+    const [tags, setTags] = useState([]);
+    const [newTime, setNewTime] = useState('');
+    const [payload, setPayload] = useState(false);
+    const [isRegFull, setIsRegFull] = useState(true);
+    const [isRegistered, setIsRegistered] = useState(false);
+    const server_uri = import.meta.env.VITE_SERVER_URI;
     const token = useSelector((state) => state?.auth?.token);
     const userId = useUserId();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    let userRole = useUserRole();
+    userRole = userRole.toLowerCase();
+
 
     const getEvents = async () => {
         const response = await fetch(`${server_uri}/events/${param.id}`)
@@ -77,7 +81,7 @@ const EventDetails = () => {
 
     const handleRegister = async () => {
         try {
-            const response = await axios.post(`${server_uri}/events/${param.id}/register`, {}, 
+            const response = await axios.post(`${server_uri}/events/${param.id}/register`, {},
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -99,19 +103,6 @@ const EventDetails = () => {
         <section className="p-6 flex bg-slate-900 flex-col gap-2 w-[1536px] m-auto max-w-full sm:w-auto md:w-full">
             <div className="rounded-lg md:p-8" id="about" role="tabpanel" aria-labelledby="about-tab">
 
-                {
-                    payload
-                        ? <div className="m-1 flex justify-end">
-                            <button onClick={() => navigate(`/campuspulse/event-edit/${param.id}`)}>
-                                <svg className="w-6 h-6 text-white cursor-pointer transition-all hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1v3m5-3v3m5-3v3M1 7h7m1.506 3.429 2.065 2.065M19 7h-2M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm6 13H6v-2l5.227-5.292a1.46 1.46 0 0 1 2.065 2.065L8 16Z" />
-                                </svg>
-                            </button>
-                        </div>
-                        : <></>
-                }
-
-
                 <section className="m-1">
                     <div className="flex flex-col sm:flex-row m-2 sm:m-0 sm:justify-between items-center">
                         <div className="text-white">
@@ -122,14 +113,30 @@ const EventDetails = () => {
                                 <span>{eventData?.venue}</span>
                             </div>
                         </div>
-                        <div className="self-center my-1">
-                            {
-                                isRegFull ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">No Seats</h2>
-                                    : isRegistered ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Registered</h2>
-                                        : expired ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Expired</h2>
-                                            : <button onClick={handleRegister} className="bg-gray-800 cursor-pointer px-10 rounded-sm transition-all hover:bg-gray-950 hover:text-blue-400 hover:border hover:border-blue-400 py-3 text-xl font-medium text-white">Apply</button>
-                            }
-                        </div>
+                        {
+                            userRole && userRole === 'student'
+                                ? <div className="self-center my-1">
+                                    {
+                                        isRegFull ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">No Seats</h2>
+                                            : isRegistered ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Registered</h2>
+                                                : expired ? <h2 className="bg-slate-950 border border-slate-500 px-10 rounded-sm transition-all py-3 text-xl font-medium text-red-500">Expired</h2>
+                                                    : <button onClick={handleRegister} className="bg-gray-800 cursor-pointer px-10 rounded-sm transition-all hover:bg-gray-950 hover:text-blue-400 hover:border hover:border-blue-400 py-3 text-xl font-medium text-white">Apply</button>
+                                    }
+                                </div>
+                                : <>
+                                    {
+                                        payload
+                                            ? <div className="m-1 flex justify-end">
+                                                <button onClick={() => navigate(`/campuspulse/event-edit/${param.id}`)}>
+                                                    <svg className="w-6 h-6 text-white cursor-pointer transition-all hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1v3m5-3v3m5-3v3M1 7h7m1.506 3.429 2.065 2.065M19 7h-2M2 3h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm6 13H6v-2l5.227-5.292a1.46 1.46 0 0 1 2.065 2.065L8 16Z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            : <></>
+                                    }
+                                </>
+                        }
                     </div>
                     <hr className="text-white my-8" />
                 </section>

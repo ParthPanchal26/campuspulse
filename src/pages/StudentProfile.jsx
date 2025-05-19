@@ -254,7 +254,7 @@ const StudentProfile = () => {
                                             {event?.category}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {event?.date}
+                                            {event?.date.slice(0, 10)}
                                         </td>
                                         <td className="px-6 py-4">
                                             {event?.venue.slice(0, 20)}
